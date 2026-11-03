@@ -124,7 +124,7 @@ const CFG = {
 
 async function crud(cfg) {
   const menu = curMenu();
-  setHead(menu, `<button id="xls">${ic("down")}Excel</button>` + (isAdmin() ? `<button class="primary" id="add">${ic("plus")}ເພີ່ມ${cfg.title}</button>` : ""));
+  setHead(menu, `<button id="xls">${ic("down")}Excel</button><button class="primary" id="add" ${isAdmin() ? "" : 'disabled title="ຕ້ອງເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານກ່ອນ"'}>${ic("plus")}ເພີ່ມ${cfg.title}</button>`);
   $("#view").innerHTML = loading();
   await loadRef();
   const { data: rows, error } = await sb.from(cfg.table).select(cfg.select || "*").order(cfg.order);
@@ -224,7 +224,7 @@ const birthPlace = (s) => [s.birth_village, s.birth_district, s.birth_province].
 const genderTag = (g) => (g ? `<span class="tag ${g === "ຍິງ" ? "f" : ""}">${esc(g)}</span>` : "");
 
 async function renderStudents() {
-  setHead(curMenu(), `<button id="xls">${ic("down")}Excel</button>` + (isAdmin() ? `<button class="primary" id="addStu">${ic("plus")}ເພີ່ມນັກສຶກສາ</button>` : ""));
+  setHead(curMenu(), `<button id="xls">${ic("down")}Excel</button><button class="primary" id="addStu" ${isAdmin() ? "" : 'disabled title="ຕ້ອງເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານກ່ອນ"'}>${ic("plus")}ເພີ່ມນັກສຶກສາ</button>`);
   $("#view").innerHTML = loading();
   await loadRef();
   $("#view").innerHTML = `<div class="bar">
