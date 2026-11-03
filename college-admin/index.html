@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ລະບົບບໍລິຫານວິທະຍາໄລ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<aside class="side" id="side">
+  <div class="brand">
+    <div class="logo"><svg class="i" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></div>
+    <div><b>ວິທະຍາໄລ</b><small>ລະບົບບໍລິຫານ</small></div>
+  </div>
+  <nav id="menu"></nav>
+  <div class="side-foot" id="authBox"></div>
+</aside>
+<main>
+  <header class="top">
+    <div class="t">
+      <button id="burger" aria-label="ເມນູ"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <div><h1 id="title"></h1><div class="sub" id="sub"></div></div>
+    </div>
+    <div id="actions"></div>
+  </header>
+  <section id="view"></section>
+</main>
+<dialog id="modal"></dialog>
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
