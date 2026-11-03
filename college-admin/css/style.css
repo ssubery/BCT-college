@@ -1,3 +1,9 @@
+@font-face{
+  font-family:'Phetsarath OT';
+  src:local('Phetsarath OT'),local('PhetsarathOT'),url('../fonts/PhetsarathOT.ttf') format('truetype');
+  font-weight:400;
+  font-display:swap;
+}
 :root{
   --bg:#f3f5f9;--surface:#fff;--ink:#172033;--muted:#64708a;--line:#e4e8f0;
   --brand:#2f5bea;--brand-d:#2247c4;--brand-soft:#e8eefe;
