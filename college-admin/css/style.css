@@ -12,7 +12,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:'Noto Sans Lao','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh;font-size:15px;line-height:1.55}
+body{margin:0;font-family:'Phetsarath OT','Noto Sans Lao',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh;font-size:15px;line-height:1.55}
 svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 
 /* ซ่อนป้าย Powered by Netlify ที่มุมจอ */
