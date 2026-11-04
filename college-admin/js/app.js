@@ -70,7 +70,7 @@ const curMenu = () => MENUS.find((m) => m.id === (location.hash.slice(1) || MENU
 function renderAuth() {
   $("#authBox").innerHTML = isAdmin()
     ? `<div class="who"><div class="av">A</div><div><b>ຜູ້ບໍລິຫານ</b><span>${esc(session.user.email)}</span></div></div><button id="logout" style="width:100%">ອອກຈາກລະບົບ</button>`
-    : `<div class="who"><div class="av">👁</div><div><b>ໂໝດເບິ່ງຢ່າງດຽວ</b><span>ແກ້ໄຂ/ລົບບໍ່ໄດ້</span></div></div><button id="login" class="primary" style="width:100%">ເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານ</button>`;
+    : `<div class="who"><div class="av">👁</div><div><b>ຜູ້ເຂົ້າຊົມ</b><span>ເພີ່ມນັກສຶກສາໄດ້ · ແກ້ໄຂ/ລົບບໍ່ໄດ້</span></div></div><button id="login" class="primary" style="width:100%">ເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານ</button>`;
   $("#login")?.addEventListener("click", openLogin);
   $("#logout")?.addEventListener("click", () => sb.auth.signOut());
 }
@@ -88,7 +88,7 @@ function openLogin() {
 }
 
 /* ======================================================
-   CRUD ທົ່ວໄປ (ສົກຮຽນ / ສາຂາວິຊາ / ອາຈານ)
+   CRUD ທົ່ວໄປ (ສົກຮຽນ / ສາຂາວິຊາ / ອາຈານ) - ເພີ່ມ/ແກ້ໄຂ/ລົບ ສະເພາະຜູ້ບໍລິຫານ
    ====================================================== */
 const CFG = {
   years: {
@@ -163,7 +163,6 @@ function crudForm(cfg, r = {}) {
 /* ======================================================
    ແດຊບອດ
    ====================================================== */
-const COLORS = ["#2f5bea", "#c2410c", "#12805c", "#b7791f", "#7c3aed", "#0e7490"];
 function bars(obj, limit = 6) {
   const e = Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, limit); const max = Math.max(1, ...e.map((x) => x[1]));
   return e.length ? e.map(([k, v]) => `<div class="brow"><span class="l" title="${esc(k)}">${esc(k)}</span><div class="track"><div class="fill" style="width:${(v / max) * 100}%"></div></div><span class="v">${v}</span></div>`).join("") : empty("ຍັງບໍ່ມີຂໍ້ມູນ");
@@ -203,7 +202,7 @@ async function renderDashboard() {
 }
 
 /* ======================================================
-   ນັກສຶກສາ
+   ນັກສຶກສາ  (ທຸກຄົນເພີ່ມໄດ້ / ແກ້ໄຂ-ລົບ ສະເພາະຜູ້ບໍລິຫານ)
    ====================================================== */
 let F = { year: "", major: "", q: "", page: 1 };
 const PAGE = 15;
@@ -224,7 +223,8 @@ const birthPlace = (s) => [s.birth_village, s.birth_district, s.birth_province].
 const genderTag = (g) => (g ? `<span class="tag ${g === "ຍິງ" ? "f" : ""}">${esc(g)}</span>` : "");
 
 async function renderStudents() {
-  setHead(curMenu(), `<button id="xls">${ic("down")}Excel</button><button class="primary" id="addStu" ${isAdmin() ? "" : 'disabled title="ຕ້ອງເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານກ່ອນ"'}>${ic("plus")}ເພີ່ມນັກສຶກສາ</button>`);
+  /* ປຸ່ມເພີ່ມນັກສຶກສາ: ທຸກຄົນກົດໄດ້ */
+  setHead(curMenu(), `<button id="xls">${ic("down")}Excel</button><button class="primary" id="addStu">${ic("plus")}ເພີ່ມນັກສຶກສາ</button>`);
   $("#view").innerHTML = loading();
   await loadRef();
   $("#view").innerHTML = `<div class="bar">
@@ -276,11 +276,14 @@ function studentView(s) {
 }
 
 function studentForm(s = {}) {
+  /* ແກ້ໄຂ: ສະເພາະຜູ້ບໍລິຫານ */
+  if (s.id && !isAdmin()) return toast("ສະເພາະຜູ້ບໍລິຫານທີ່ແກ້ໄຂໄດ້", true);
   const f = (name, label, type = "text", extra = "") => `<label>${label}<input name="${name}" type="${type}" value="${esc(s[name])}" ${extra}></label>`;
   modal(`<form><h2>${s.id ? "ແກ້ໄຂ" : "ເພີ່ມ"}ປະຫວັດນັກສຶກສາ</h2><div class="grid">
+    <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
     <label>ເລືອກສົກຮຽນ<select name="academic_year_id" required>${yearOpts(s.academic_year_id || F.year)}</select></label>
     <label>ສາຂາວິຊາ<select name="major_id">${majorOpts(s.major_id || F.major)}</select></label>
-    <label class="full">ຮູບພາບ<input name="photo" type="file" accept="image/*"></label>
+    <label class="full">ຮູບພາບ (JPG, PNG, WebP ບໍ່ເກີນ 2 MB)<input name="photo" type="file" accept="image/jpeg,image/png,image/webp"></label>
     ${f("first_name_lo", "ຊື່ (ລາວ)", "text", "required")}${f("last_name_lo", "ນາມສະກຸນ (ລາວ)", "text", "required")}
     ${f("first_name_en", "Name (English)")}${f("last_name_en", "Surname (English)")}
     <label>ເພດ<select name="gender"><option value="">-</option>${["ຊາຍ", "ຍິງ"].map((g) => `<option ${s.gender === g ? "selected" : ""}>${g}</option>`).join("")}</select></label>
@@ -290,6 +293,8 @@ function studentForm(s = {}) {
   </div><div class="foot"><button type="button" data-close>ຍົກເລີກ</button><button class="primary" type="submit">ບັນທຶກ</button></div></form>`,
   (m) => (m.querySelector("form").onsubmit = async (e) => {
     e.preventDefault(); const fd = new FormData(e.target); const rec = {};
+    if (fd.get("website")) return m.close(); // honeypot: ບອທຈະເຕີມຊ່ອງນີ້
+    if (!s.id && !isAdmin() && !confirm("ຢືນຢັນການເພີ່ມນັກສຶກສາ? ຫຼັງບັນທຶກແລ້ວ ແກ້ໄຂ/ລົບເອງບໍ່ໄດ້")) return;
     ["academic_year_id","major_id","first_name_lo","last_name_lo","first_name_en","last_name_en","gender","dob","birth_village","birth_district","birth_province","high_school","phone","father_phone","mother_phone","emergency_phone"]
       .forEach((k) => (rec[k] = fd.get(k) === "" ? null : fd.get(k)));
     const file = fd.get("photo");
